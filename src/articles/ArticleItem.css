@@ -1,0 +1,28 @@
+.article_container {
+  padding: 12px;
+  width: 80%;
+  height: 200px;
+  margin: 30px auto;
+  border: 1px solid black;
+  position: relative;
+}
+
+.article_container h1 {
+  margin-bottom: 7px;
+}
+
+.article_container p {
+  margin-bottom: 10px;
+}
+
+.article_btns {
+  position: absolute;
+  display: inline-block;
+  bottom: 0;
+}
+
+.article_btns button {
+  width: 100px;
+  height: 30px;
+  margin-right: 5px;
+}
