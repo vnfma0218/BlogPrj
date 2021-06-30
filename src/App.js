@@ -1,45 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  // Redirect,
+  Redirect,
   Switch,
 } from 'react-router-dom';
 import ArticleList from './articles/ArticleList';
 import NewArticle from './articles/Page/NewArticle';
+import ArticleDetail from './articles/Page/ArticleDetail';
 import './App.css';
-const articles = [
-  {
-    id: 1,
-    title: 'this is article 1 title',
-    createdAt: '2021/6/27',
-    content:
-      'first article content first article content first article content first article content first article content first article content first article content ',
-  },
-  {
-    id: 2,
-    title: 'this is article 2 title',
-    createdAt: '2020/6/27',
-    content: 'second article content',
-  },
-  {
-    id: 3,
-    title: 'this is article 3 title',
-    createdAt: '1990/6/27',
-    content: 'thrid article content',
-  },
-];
+import EditArticle from './articles/Page/EditArticle';
+import axios from 'axios';
+
 function App() {
+  const [loadedArticles, setLoadedArticles] = useState([]);
+  const fetchUrl = 'http://localhost:5000/api/articles';
+
+  useEffect(() => {
+    console.log('home render');
+    const fetchArticles = async () => {
+      const result = await axios.get(fetchUrl);
+      setLoadedArticles(result.data.articles);
+    };
+    fetchArticles();
+  }, [fetchUrl]);
+
+  const addArticleHandler = (newArticle) => {
+    setLoadedArticles(loadedArticles.concat(newArticle));
+  };
+
+  const deleteArticleHandler = (id) => {
+    setLoadedArticles(loadedArticles.filter((article) => article.id !== id));
+  };
+
   return (
     <div className='App'>
       <Router>
         <Switch>
           <Route path='/' exact>
-            <ArticleList articles={articles} />
+            <ArticleList
+              articles={loadedArticles}
+              onDelete={deleteArticleHandler}
+            />
           </Route>
           <Route path='/new' exact>
-            <NewArticle />
+            <NewArticle onAddArticle={addArticleHandler} />
           </Route>
+          <Route path='/detail' exact>
+            <ArticleDetail />
+          </Route>
+          <Route path='/edit/:articleId' exact>
+            <EditArticle />
+          </Route>
+          <Redirect from='*' to='/' />
         </Switch>
       </Router>
     </div>

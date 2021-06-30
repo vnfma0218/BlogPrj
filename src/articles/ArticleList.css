@@ -1,8 +1,8 @@
 .acticleList {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  margin: 30px auto;
+  width: 60%;
+  margin: auto;
   /* text-align: center; */
 }
 
@@ -15,11 +15,23 @@
 }
 
 .articleList_title {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  font-size: 50px;
 }
 
 .newArticle_btn {
   width: 100px;
   height: 30px;
   margin-right: 90px;
+}
+
+/* another layout */
+.noArticle_title {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+.newBtn {
+  margin-top: 50px;
+  height: 40px;
 }

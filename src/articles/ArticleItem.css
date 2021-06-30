@@ -4,15 +4,19 @@
   height: 200px;
   margin: 30px auto;
   border: 1px solid black;
+  border-radius: 4px;
+  background-color: #f2ddc3;
   position: relative;
 }
 
 .article_container h1 {
   margin-bottom: 7px;
+  font-size: 24px;
 }
 
 .article_container p {
   margin-bottom: 10px;
+  font-size: 12px;
 }
 
 .article_btns {
@@ -25,4 +29,6 @@
   width: 100px;
   height: 30px;
   margin-right: 5px;
+  background-color: #567b95;
+  border: 1px solid #567b95;
 }
