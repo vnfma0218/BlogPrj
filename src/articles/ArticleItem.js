@@ -33,13 +33,13 @@ const ArticleItem = ({ title, content, createdAt, id, onRemove }) => {
         <Link to='/detail'>{title}</Link>
       </h1>
       <p>{createdAt}</p>
-      <div>
+      <div className='content'>
         {content.length > 300 ? `${content.substring(0, 100)}...` : content}
       </div>
       <div className='article_btns'>
-        <button>
-          <Link to={`/edit/${id}`}>Edit</Link>
-        </button>
+        <Link to={`/edit/${id}`}>
+          <button>Edit</button>
+        </Link>
         <button onClick={onDeleteClick}>Delete</button>
       </div>
     </div>

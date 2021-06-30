@@ -4,7 +4,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 
 import './EditArticle.css';
 
-const EditArticle = () => {
+const EditArticle = ({ onEditArticle }) => {
   const articleId = useParams().articleId;
   const history = useHistory();
   const [loadedArticle, setLoadedArticle] = useState({});
@@ -18,6 +18,8 @@ const EditArticle = () => {
         `http://localhost:5000/api/articles/${articleId}`
       );
       setLoadedArticle(result.data.article);
+      setTitle(result.data.article.title);
+      setContent(result.data.article.content);
     };
     fetchArticles();
   }, [articleId]);
@@ -37,11 +39,15 @@ const EditArticle = () => {
       title,
       content,
     };
-    console.log(article);
 
     const result = await axios.patch(
       `http://localhost:5000/api/articles/${articleId}`,
       article
+    );
+    onEditArticle(
+      result.data.article._id,
+      result.data.article.title,
+      result.data.article.content
     );
     history.push('/');
   };
@@ -52,9 +58,9 @@ const EditArticle = () => {
     <div>
       {loadedArticle && (
         <>
-          <button className='homeBtn'>
-            <Link to='/'>List</Link>
-          </button>
+          <Link to='/'>
+            <button className='homeBtn'>List</button>
+          </Link>
           <form onSubmit={onSubmit} className='newArticle_container'>
             <label className='article_title'>Title</label>
             <input

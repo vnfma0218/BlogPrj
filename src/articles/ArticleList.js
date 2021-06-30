@@ -4,15 +4,18 @@ import { Link } from 'react-router-dom';
 
 import './ArticleList.css';
 
-const ArticleList = ({ articles, onDelete }) => {
+const ArticleList = ({ articles, onDelete, loadingState }) => {
+  if (loadingState) {
+    return <h1>Loading..</h1>;
+  }
   if (articles.length === 0) {
     return (
       <>
         <h1 className='noArticle_title'>no found articles</h1>
         <h3>You want to create one?</h3>
-        <button className='newArticle_btn newBtn'>
-          <Link to='/new'>New Article</Link>
-        </button>
+        <Link to='/new'>
+          <button className='newArticle_btn newBtn'>New Article</button>
+        </Link>
       </>
     );
   }
@@ -21,9 +24,9 @@ const ArticleList = ({ articles, onDelete }) => {
       <div className='acticleList'>
         <div className='articleList_top'>
           <h1 className='articleList_title'>Articles</h1>
-          <button className='newArticle_btn'>
-            <Link to='/new'>New Article</Link>
-          </button>
+          <Link to='/new'>
+            <button className='newArticle_btn newBtn'>New Article</button>
+          </Link>
         </div>
         {articles.map((article) => {
           return (
