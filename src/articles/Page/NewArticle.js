@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import './NewArticle.css';
 const NewArticle = ({ onAddArticle }) => {
@@ -26,17 +26,14 @@ const NewArticle = ({ onAddArticle }) => {
       title,
       content,
     };
-    const responseData = await axios.post(
-      'http://localhost:5000/api/articles/new',
-      article
-    );
-    const createdArticle = {
-      title: responseData.data.article.title,
-      content: responseData.data.article.content,
-      id: responseData.data.article._id,
-    };
+    await axios.post('http://localhost:5000/api/articles/new', article);
+    // const createdArticle = {
+    //   title: responseData.data.article.title,
+    //   content: responseData.data.article.content,
+    //   id: responseData.data.article._id,
+    // };
 
-    onAddArticle(createdArticle);
+    // onAddArticle(createdArticle);
     history.push('/');
   };
 

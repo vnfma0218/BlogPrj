@@ -1,68 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
 } from 'react-router-dom';
-import ArticleList from './articles/ArticleList';
+
+import Auth from './users/Pages/Auth';
+import ArticleList from './articles/components/ArticleList';
 import NewArticle from './articles/Page/NewArticle';
-import ArticleDetail from './articles/Page/ArticleDetail';
+import ArticleDetail from './articles/components/ArticleDetail';
 import './App.css';
 import EditArticle from './articles/Page/EditArticle';
-import axios from 'axios';
+import SignUp from './users/Pages/SignUp';
+import Users from './users/Pages/Users';
 
 function App() {
-  const [loadedArticles, setLoadedArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const fetchUrl = 'http://localhost:5000/api/articles';
-
-  useEffect(() => {
-    console.log('home render');
-    const fetchArticles = async () => {
-      setIsLoading(true);
-      const result = await axios.get(fetchUrl);
-      setLoadedArticles(result.data.articles);
-      setIsLoading(false);
-    };
-    fetchArticles();
-  }, [fetchUrl]);
-
-  const addArticleHandler = (newArticle) => {
-    setLoadedArticles(loadedArticles.concat(newArticle));
-  };
-
-  const deleteArticleHandler = (id) => {
-    setLoadedArticles(loadedArticles.filter((article) => article.id !== id));
-  };
-
-  const editArticleHandler = (id, title, content) => {
-    const index = loadedArticles.findIndex((article) => (article.id = id));
-    let newArr = [...loadedArticles];
-    newArr[index] = { title, content, id };
-    setLoadedArticles(newArr);
-    console.log(loadedArticles);
-  };
-
   return (
     <div className='App'>
       <Router>
         <Switch>
           <Route path='/' exact>
-            <ArticleList
-              loadingState={isLoading}
-              articles={loadedArticles}
-              onDelete={deleteArticleHandler}
-            />
+            <Auth />
+          </Route>
+          <Route path='/users/sign-up' exact>
+            <SignUp />
+          </Route>
+          <Route path='/users' exact>
+            <Users />
+          </Route>
+          <Route path='/articles' exact>
+            <ArticleList />
           </Route>
           <Route path='/new' exact>
-            <NewArticle onAddArticle={addArticleHandler} />
+            <NewArticle />
           </Route>
-          <Route path='/detail' exact>
+          <Route path='/detail/:articleId' exact>
             <ArticleDetail />
           </Route>
           <Route path='/edit/:articleId' exact>
-            <EditArticle onEditArticle={editArticleHandler} />
+            <EditArticle />
           </Route>
           <Redirect from='*' to='/' />
         </Switch>

@@ -12,6 +12,8 @@
 .article_container h1 {
   margin-bottom: 7px;
   font-size: 20px;
+  border-bottom: 1px solid black;
+  padding: 3px 0 10px;
 }
 
 .article_container p {

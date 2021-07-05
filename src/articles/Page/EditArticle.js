@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import useHttp from '../../hooks/use-http';
 
 import './EditArticle.css';
 
@@ -10,19 +10,18 @@ const EditArticle = ({ onEditArticle }) => {
   const [loadedArticle, setLoadedArticle] = useState({});
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const { sendRequest } = useHttp();
 
   useEffect(() => {
-    console.log('home render');
-    const fetchArticles = async () => {
-      const result = await axios(
-        `http://localhost:5000/api/articles/${articleId}`
-      );
-      setLoadedArticle(result.data.article);
-      setTitle(result.data.article.title);
-      setContent(result.data.article.content);
+    const getArticle = ({ data }) => {
+      setLoadedArticle(data.article);
     };
-    fetchArticles();
-  }, [articleId]);
+    sendRequest(
+      { url: `http://localhost:5000/api/articles/${articleId}`, method: 'get' },
+      getArticle
+    );
+    return () => setLoadedArticle({});
+  }, [articleId, sendRequest]);
 
   const onChange = (e) => {
     if (e.target.name === 'title') {
@@ -36,18 +35,22 @@ const EditArticle = ({ onEditArticle }) => {
     e.preventDefault();
     //DB 저장
     const article = {
-      title,
-      content,
+      title: title === '' ? loadedArticle.title : title,
+      content: content === '' ? loadedArticle.content : content,
     };
 
-    const result = await axios.patch(
-      `http://localhost:5000/api/articles/${articleId}`,
-      article
-    );
-    onEditArticle(
-      result.data.article._id,
-      result.data.article.title,
-      result.data.article.content
+    // const getData = ({ data }) => {
+    //   console.log(data.article);
+    //   const updatedarticle = data.article;
+    //   // onEditArticle(updatedarticle);
+    // };
+    sendRequest(
+      {
+        url: `http://localhost:5000/api/articles/${articleId}`,
+        method: 'patch',
+        body: article,
+      }
+      // getData
     );
     history.push('/');
   };
